@@ -1,13 +1,868 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>nmcs-portfolio</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NMCS Kenya — Maseno Chapter</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --gold: #C9922A;
+      --gold-light: #E8B84B;
+      --gold-pale: #F5E6C8;
+      --deep-green: #1A3A2A;
+      --mid-green: #2D5E42;
+      --light-green: #4A8C62;
+      --cream: #FAF6EE;
+      --white: #FFFFFF;
+      --text-dark: #1C1C1C;
+      --text-mid: #4A4A4A;
+      --text-light: #7A7A7A;
+      --red-accent: #8B2020;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--text-dark);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 4rem;
+      background: rgba(26,58,42,0.97);
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
+      border-bottom: 2px solid var(--gold);
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: .75rem;
+    }
+    .nav-logo-icon {
+      width: 42px; height: 42px;
+      background: var(--gold);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem; font-weight: 900;
+      color: var(--deep-green);
+    }
+    .nav-logo-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem; font-weight: 700;
+      color: var(--gold-light);
+      line-height: 1.2;
+    }
+    .nav-logo-text span { display: block; font-size: .72rem; font-weight: 400; color: rgba(255,255,255,0.6); font-family: 'DM Sans', sans-serif; }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      color: rgba(255,255,255,0.8); text-decoration: none;
+      font-size: .88rem; letter-spacing: .06em; text-transform: uppercase;
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--gold-light); }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      background:
+        linear-gradient(160deg, rgba(26,58,42,0.92) 0%, rgba(26,58,42,0.70) 60%, rgba(201,146,42,0.3) 100%),
+        url('https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1600&q=80') center/cover no-repeat;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 8rem 2rem 6rem;
+      position: relative; overflow: hidden;
+    }
+    .hero-cross {
+      font-size: 2.5rem; color: var(--gold); margin-bottom: 1.5rem;
+      animation: fadeDown .8s ease both;
+    }
+    #hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.8rem, 6vw, 5.2rem);
+      font-weight: 900; color: var(--white); line-height: 1.1;
+      animation: fadeDown .9s .1s ease both;
+    }
+    #hero h1 em { color: var(--gold-light); font-style: italic; }
+    .hero-sub {
+      font-family: 'Lora', serif; font-size: 1.15rem;
+      color: rgba(255,255,255,0.8); margin-top: 1.2rem; max-width: 560px;
+      animation: fadeDown .9s .2s ease both;
+    }
+    .hero-badge {
+      margin-top: 2.5rem;
+      display: inline-flex; gap: 2.5rem; flex-wrap: wrap; justify-content: center;
+      animation: fadeDown .9s .35s ease both;
+    }
+    .hero-badge-item {
+      display: flex; flex-direction: column; align-items: center;
+      gap: .3rem;
+    }
+    .hero-badge-item .num {
+      font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 900;
+      color: var(--gold-light);
+    }
+    .hero-badge-item .lbl {
+      font-size: .8rem; text-transform: uppercase; letter-spacing: .1em;
+      color: rgba(255,255,255,0.6);
+    }
+    .hero-divider { width: 2px; height: 50px; background: rgba(255,255,255,0.2); align-self: center; }
+    .hero-scroll {
+      position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: .5rem;
+      color: rgba(255,255,255,0.5); font-size: .75rem; text-transform: uppercase; letter-spacing: .1em;
+      animation: pulse 2s infinite;
+    }
+    .hero-scroll svg { width: 20px; height: 20px; }
+
+    /* ── SECTION SHARED ── */
+    section { padding: 6rem 2rem; }
+    .container { max-width: 1100px; margin: 0 auto; }
+    .section-label {
+      display: inline-flex; align-items: center; gap: .6rem;
+      font-size: .78rem; letter-spacing: .14em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 1rem; font-weight: 500;
+    }
+    .section-label::before, .section-label::after {
+      content: ''; display: block;
+      height: 1px; width: 28px; background: var(--gold);
+    }
+    h2.section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 900; line-height: 1.15; color: var(--deep-green);
+    }
+    #maseno h2.section-title {
+      color: var(--white);
+    }
+    .title-underline {
+      width: 60px; height: 4px;
+      background: linear-gradient(90deg, var(--gold), var(--gold-light));
+      margin-top: .8rem; border-radius: 2px;
+    }
+
+    /* ── HISTORY ── */
+    #history { background: var(--cream); }
+    .history-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;
+      align-items: start; margin-top: 3.5rem;
+    }
+    .history-text p {
+      font-family: 'Lora', serif; font-size: 1.02rem;
+      line-height: 1.85; color: var(--text-mid);
+      margin-bottom: 1.2rem;
+    }
+    .history-text p strong { color: var(--deep-green); }
+    .history-quote {
+      background: var(--deep-green);
+      border-left: 5px solid var(--gold);
+      padding: 2rem 2rem 2rem 2.5rem;
+      border-radius: 0 12px 12px 0;
+      margin: 2rem 0;
+    }
+    .history-quote blockquote {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem; font-style: italic;
+      color: var(--gold-pale); line-height: 1.6;
+    }
+    .history-quote cite {
+      display: block; margin-top: .8rem;
+      font-family: 'DM Sans', sans-serif; font-size: .83rem;
+      color: rgba(255,255,255,0.5); letter-spacing: .06em;
+    }
+    .history-images { display: flex; flex-direction: column; gap: 1.5rem; }
+    .img-card {
+      border-radius: 16px; overflow: hidden;
+      position: relative; box-shadow: 0 12px 40px rgba(26,58,42,0.18);
+    }
+    .img-card img {
+      width: 100%; height: 260px; object-fit: cover;
+      display: block; transition: transform .5s ease;
+    }
+    .img-card:hover img { transform: scale(1.04); }
+    .img-card-caption {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      background: linear-gradient(transparent, rgba(26,58,42,0.88));
+      padding: 1.5rem 1.2rem .9rem;
+      color: var(--white); font-size: .85rem; font-style: italic;
+      font-family: 'Lora', serif;
+    }
+    .timeline {
+      display: flex; flex-direction: column; gap: 0;
+      margin-top: 3rem; position: relative;
+    }
+    .timeline::before {
+      content: ''; position: absolute; left: 22px; top: 0; bottom: 0;
+      width: 2px; background: linear-gradient(to bottom, var(--gold), var(--light-green));
+    }
+    .timeline-item {
+      display: flex; gap: 1.5rem; align-items: flex-start;
+      padding-bottom: 2rem; position: relative;
+    }
+    .timeline-dot {
+      min-width: 46px; height: 46px;
+      background: var(--deep-green); border: 3px solid var(--gold);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-family: 'Playfair Display', serif; font-weight: 700;
+      font-size: .78rem; color: var(--gold); z-index: 1;
+    }
+    .timeline-content h4 {
+      font-family: 'Playfair Display', serif; font-size: 1rem;
+      color: var(--deep-green); margin-bottom: .3rem;
+    }
+    .timeline-content p {
+      font-size: .88rem; color: var(--text-mid); line-height: 1.6;
+    }
+
+    /* ── MASENO CHAPTER ── */
+    #maseno {
+      background: linear-gradient(180deg, var(--deep-green) 0%, #0F2318 100%);
+      position: relative; overflow: hidden;
+    }
+    #maseno::before {
+      content: '';
+      position: absolute; top: -100px; right: -100px;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(201,146,42,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    #maseno .section-label { color: var(--gold-light); }
+    #maseno .section-label::before, #maseno .section-label::after { background: var(--gold-light); }
+    #maseno h2.section-title { color: var(--white); }
+    .maseno-intro {
+      max-width: 680px; margin: 1.5rem 0 3.5rem;
+      font-family: 'Lora', serif; font-size: 1.05rem;
+      line-height: 1.8; color: rgba(255,255,255,0.72);
+    }
+    .leaders-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 2rem;
+    }
+    .leader-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(201,146,42,0.25);
+      border-radius: 20px; overflow: hidden;
+      transition: transform .3s, box-shadow .3s, border-color .3s;
+    }
+    .leader-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+      border-color: rgba(201,146,42,0.6);
+    }
+    .leader-img {
+      width: 100%; height: 240px; object-fit: cover;
+      display: block; filter: grayscale(20%);
+      transition: filter .3s;
+    }
+    .leader-card:hover .leader-img { filter: grayscale(0%); }
+    .leader-body { padding: 1.4rem 1.5rem 1.8rem; }
+    .leader-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem; font-weight: 700; color: var(--white);
+    }
+    .leader-pos {
+      font-size: .8rem; text-transform: uppercase; letter-spacing: .1em;
+      color: var(--gold); margin-top: .3rem;
+    }
+    .leader-divider {
+      width: 36px; height: 2px;
+      background: var(--gold); margin: 1rem 0;
+    }
+    .leader-quote {
+      font-family: 'Lora', serif; font-style: italic;
+      font-size: .95rem; line-height: 1.65;
+      color: rgba(255,255,255,0.65);
+    }
+    .leader-quote::before { content: '\201C'; color: var(--gold); font-size: 1.4rem; line-height: 0; vertical-align: -0.3em; }
+    .leader-quote::after { content: '\201D'; color: var(--gold); font-size: 1.4rem; line-height: 0; vertical-align: -0.3em; }
+
+    /* ── JOIN US ── */
+    #join {
+      background: var(--cream);
+      text-align: center;
+      padding: 6rem 2rem;
+    }
+    .join-inner {
+      max-width: 640px; margin: 0 auto;
+    }
+    .join-inner p {
+      font-family: 'Lora', serif; font-size: 1.1rem;
+      color: var(--text-mid); line-height: 1.8; margin: 1.5rem 0 2.5rem;
+    }
+    .btn-join {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--deep-green), var(--mid-green));
+      color: var(--white);
+      font-size: 1rem; font-weight: 500; letter-spacing: .08em;
+      padding: 1.1rem 3.2rem; border-radius: 50px;
+      text-decoration: none;
+      border: 2px solid transparent;
+      box-shadow: 0 8px 28px rgba(26,58,42,0.28);
+      transition: all .3s;
+      position: relative; overflow: hidden;
+    }
+    .btn-join::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      opacity: 0; transition: opacity .3s;
+    }
+    .btn-join:hover::before { opacity: 1; }
+    .btn-join span { position: relative; z-index: 1; }
+    .btn-join:hover { color: var(--deep-green); transform: translateY(-2px); box-shadow: 0 12px 36px rgba(26,58,42,0.3); }
+
+    /* ── FORM MODAL ── */
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 200;
+      background: rgba(10,20,14,0.88);
+      display: flex; align-items: center; justify-content: center;
+      padding: 2rem;
+      opacity: 0; pointer-events: none;
+      transition: opacity .3s;
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+    .modal {
+      background: var(--white); border-radius: 24px;
+      width: 100%; max-width: 580px;
+      max-height: 90vh; overflow-y: auto;
+      padding: 3rem;
+      position: relative;
+      transform: translateY(30px);
+      transition: transform .3s;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+    }
+    .modal-overlay.open .modal { transform: translateY(0); }
+    .modal-close {
+      position: absolute; top: 1.2rem; right: 1.4rem;
+      background: none; border: none; cursor: pointer;
+      font-size: 1.5rem; color: var(--text-light);
+      line-height: 1; transition: color .2s;
+    }
+    .modal-close:hover { color: var(--text-dark); }
+    .modal h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem; color: var(--deep-green); margin-bottom: .4rem;
+    }
+    .modal-sub { font-size: .9rem; color: var(--text-light); margin-bottom: 2rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-group { display: flex; flex-direction: column; gap: .4rem; margin-bottom: 1.2rem; }
+    .form-group label { font-size: .82rem; font-weight: 500; color: var(--text-mid); letter-spacing: .04em; text-transform: uppercase; }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      border: 1.5px solid #DDD;
+      border-radius: 10px; padding: .75rem 1rem;
+      font-family: 'DM Sans', sans-serif; font-size: .95rem;
+      color: var(--text-dark); background: #FAFAFA;
+      transition: border-color .2s, box-shadow .2s;
+      outline: none;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--mid-green);
+      box-shadow: 0 0 0 3px rgba(45,94,66,0.12);
+      background: var(--white);
+    }
+    .form-group textarea { resize: vertical; min-height: 90px; }
+    .btn-submit {
+      width: 100%;
+      background: linear-gradient(135deg, var(--deep-green), var(--mid-green));
+      color: var(--white); border: none; cursor: pointer;
+      padding: 1rem; border-radius: 50px;
+      font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 500;
+      letter-spacing: .06em;
+      transition: opacity .2s, transform .2s;
+      margin-top: .5rem;
+    }
+    .btn-submit:hover { opacity: .9; transform: translateY(-1px); }
+    .form-success {
+      text-align: center; padding: 2rem 0;
+      display: none;
+    }
+    .form-success .check { font-size: 3.5rem; margin-bottom: 1rem; }
+    .form-success h4 {
+      font-family: 'Playfair Display', serif; font-size: 1.5rem;
+      color: var(--deep-green); margin-bottom: .6rem;
+    }
+    .form-success p { color: var(--text-mid); font-size: .95rem; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #0A1610;
+      padding: 3rem 2rem 2rem;
+      text-align: center;
+      border-top: 2px solid rgba(201,146,42,0.3);
+    }
+    .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem; font-weight: 900;
+      color: var(--gold-light); margin-bottom: .4rem;
+    }
+    .footer-tagline {
+      font-size: .83rem; color: rgba(255,255,255,0.4);
+      font-family: 'Lora', serif; font-style: italic;
+      margin-bottom: 2rem;
+    }
+    .social-row {
+      display: flex; align-items: center; justify-content: center;
+      gap: 1rem; flex-wrap: wrap; margin-bottom: 2rem;
+    }
+    .social-label {
+      font-size: .8rem; letter-spacing: .1em; text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+    }
+    .social-links { display: flex; gap: .8rem; }
+    .social-link {
+      display: flex; align-items: center; gap: .45rem;
+      text-decoration: none;
+      border: 1px solid rgba(201,146,42,0.35);
+      border-radius: 50px; padding: .5rem 1.1rem;
+      color: rgba(255,255,255,0.7); font-size: .83rem;
+      transition: all .25s;
+    }
+    .social-link:hover {
+      background: rgba(201,146,42,0.15);
+      border-color: var(--gold);
+      color: var(--gold-light);
+    }
+    .social-link svg { width: 16px; height: 16px; }
+    .footer-copy {
+      font-size: .78rem; color: rgba(255,255,255,0.25);
+      letter-spacing: .04em;
+    }
+    .footer-copy a { color: rgba(255,255,255,0.4); text-decoration: none; }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: .5; transform: translateX(-50%) translateY(0); }
+      50%       { opacity: 1; transform: translateX(-50%) translateY(5px); }
+    }
+    .reveal {
+      opacity: 0; transform: translateY(28px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .history-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .form-row { grid-template-columns: 1fr; }
+      .modal { padding: 2rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <div class="nav-logo-icon">✝</div>
+    <div class="nav-logo-text">
+      NMCS Kenya
+      <span>Maseno Chapter</span>
+    </div>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#history">History</a></li>
+    <li><a href="#maseno">Chapter</a></li>
+    <li><a href="#join">Join Us</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-cross">✝</div>
+  <h1>National Movement of<br><em>Catholic Students</em></h1>
+  <p class="hero-sub">Maseno Chapter — Faith, Justice & Student Leadership in the Heart of Kenya</p>
+  <div class="hero-badge">
+    <div class="hero-badge-item">
+      <span class="num">1921</span>
+      <span class="lbl">IMCS Founded</span>
+    </div>
+    <div class="hero-divider"></div>
+    <div class="hero-badge-item">
+      <span class="num">80+</span>
+      <span class="lbl">Countries</span>
+    </div>
+    <div class="hero-divider"></div>
+    <div class="hero-badge-item">
+      <span class="num">Pax Romana</span>
+      <span class="lbl">Global Body</span>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+    Scroll
+  </div>
+</section>
+
+<!-- HISTORY -->
+<section id="history">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Our Roots</div>
+      <h2 class="section-title">History of NMCS Kenya</h2>
+      <div class="title-underline"></div>
+    </div>
+
+    <div class="history-grid">
+      <div class="history-text reveal">
+        <p>
+          The National Movement of Catholic Students Kenya (NMCS) is the Kenyan national branch of the <strong>International Movement of Catholic Students (IMCS) — Pax Romana</strong>, one of the oldest and most influential Catholic student organisations in the world, founded in 1921.
+        </p>
+        <p>
+          NMCS Kenya emerged from a growing recognition within the Church that students occupy a unique and prophetic role in society. Rooted in Catholic Social Teaching, the movement was established to provide a structured space for <strong>university and college students to live and grow in faith</strong>, while actively engaging with the social realities around them.
+        </p>
+        <p>
+          Guided by the <strong>See–Judge–Act</strong> methodology championed by Cardinal Cardijn, NMCS Kenya has formed generations of young Catholic leaders who go on to serve in professional, civic and church circles across Kenya and beyond.
+        </p>
+
+        <div class="history-quote">
+          <blockquote>
+            "The student of today is the builder of tomorrow. NMCS exists to ensure that builder is anchored in the Gospel."
+          </blockquote>
+          <cite>— IMCS–Pax Romana tradition</cite>
+        </div>
+
+        <p>
+          IMCS–Pax Romana holds <strong>consultative status</strong> with the United Nations and UNESCO, giving NMCS Kenya a global platform to speak on student rights, youth development and social justice at international levels.
+        </p>
+        <p>
+          Today, NMCS Kenya operates through chapters across universities and colleges nationwide, with <strong>Maseno University</strong> hosting one of the most vibrant and active chapters in the country.
+        </p>
+      </div>
+
+      <div class="history-images reveal">
+        <div class="img-card">
+          <img src="https://images.unsplash.com/photo-1542810634-71277d95dcbb?w=800&q=80" alt="Catholic students in worship"/>
+          <div class="img-card-caption">Students gathered in prayer and reflection</div>
+        </div>
+        <div class="img-card">
+          <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=800&q=80" alt="Students in a meeting"/>
+          <div class="img-card-caption">Formation and leadership development sessions</div>
+        </div>
+
+        <div class="timeline reveal">
+          <div class="timeline-item">
+            <div class="timeline-dot">1921</div>
+            <div class="timeline-content">
+              <h4>IMCS Pax Romana Founded</h4>
+              <p>International Movement of Catholic Students established in Europe, uniting students across borders under shared faith values.</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot">1970s</div>
+            <div class="timeline-content">
+              <h4>NMCS Kenya Established</h4>
+              <p>The movement takes root in Kenya, spreading to major universities and forming the first national leadership structure.</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot">2000s</div>
+            <div class="timeline-content">
+              <h4>Expansion to Maseno</h4>
+              <p>NMCS extends to Maseno University, establishing one of Western Kenya's most active chapters.</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot">Today</div>
+            <div class="timeline-content">
+              <h4>Growing & Thriving</h4>
+              <p>NMCS Maseno continues to form student leaders committed to faith, justice and service in the community.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MASENO CHAPTER -->
+<section id="maseno">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Our People</div>
+      <h2 class="section-title" style="color:#fff;">The Maseno Chapter</h2>
+      <div class="title-underline"></div>
+    </div>
+    <p class="maseno-intro reveal">
+      The NMCS Maseno Chapter is home to passionate, faith-driven students at Maseno University. Led by an elected executive team, the chapter organises spiritual retreats, community outreach, academic forums and social justice campaigns throughout the academic year.
+    </p>
+
+    <div class="leaders-grid">
+
+      <!-- CARD 1 -->
+      <div class="leader-card reveal">
+        <img class="leader-img" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80" alt="Chapter Chairperson"/>
+        <div class="leader-body">
+          <div class="leader-name">Brian Otieno</div>
+          <div class="leader-pos">Chapter Chairperson</div>
+          <div class="leader-divider"></div>
+          <p class="leader-quote">Faith without action is hollow. Our chapter exists to turn the Gospel into tangible service for our community.</p>
+        </div>
+      </div>
+
+      <!-- CARD 2 -->
+      <div class="leader-card reveal">
+        <img class="leader-img" src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=600&q=80" alt="Vice Chairperson"/>
+        <div class="leader-body">
+          <div class="leader-name">Amina Wanjiru</div>
+          <div class="leader-pos">Vice Chairperson</div>
+          <div class="leader-divider"></div>
+          <p class="leader-quote">Every student has a story that deserves to be heard. I lead with empathy and a deep conviction in the dignity of every person.</p>
+        </div>
+      </div>
+
+      <!-- CARD 3 -->
+      <div class="leader-card reveal">
+        <img class="leader-img" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=600&q=80" alt="Secretary General"/>
+        <div class="leader-body">
+          <div class="leader-name">Kevin Mwangi</div>
+          <div class="leader-pos">Secretary General</div>
+          <div class="leader-divider"></div>
+          <p class="leader-quote">Organisation and transparency are acts of love. When we communicate clearly, we build trust across our entire movement.</p>
+        </div>
+      </div>
+
+      <!-- CARD 4 -->
+      <div class="leader-card reveal">
+        <img class="leader-img" src="https://images.unsplash.com/photo-1589156280159-27698a70f29e?w=600&q=80" alt="Treasurer"/>
+        <div class="leader-body">
+          <div class="leader-name">Mercy Achieng</div>
+          <div class="leader-pos">Treasurer</div>
+          <div class="leader-divider"></div>
+          <p class="leader-quote">Every shilling entrusted to us is a shilling in service of God's mission. I steward our resources with prayer and precision.</p>
+        </div>
+      </div>
+
+      <!-- CARD 5 -->
+      <div class="leader-card reveal">
+        <img class="leader-img" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=600&q=80" alt="Chaplain Liaison"/>
+        <div class="leader-body">
+          <div class="leader-name">Fr. Daniel Omondi</div>
+          <div class="leader-pos">Chaplain / Spiritual Director</div>
+          <div class="leader-divider"></div>
+          <p class="leader-quote">I walk alongside these young people not as a superior, but as a fellow pilgrim. The Spirit moves powerfully through student hearts.</p>
+        </div>
+      </div>
+
+      <!-- CARD 6 -->
+      <div class="leader-card reveal">
+        <img class="leader-img" src="https://images.unsplash.com/photo-1522529599102-193c0d76b5b6?w=600&q=80" alt="Social Justice Coordinator"/>
+        <div class="leader-body">
+          <div class="leader-name">Purity Kamau</div>
+          <div class="leader-pos">Social Justice Coordinator</div>
+          <div class="leader-divider"></div>
+          <p class="leader-quote">Justice is not a slogan — it is a vocation. We are called to stand with the poor, the marginalised, and the voiceless.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- JOIN US -->
+<section id="join">
+  <div class="join-inner reveal">
+    <div class="section-label" style="justify-content:center;">Be Part of the Mission</div>
+    <h2 class="section-title" style="text-align:center;">Join NMCS Maseno</h2>
+    <div class="title-underline" style="margin:0.8rem auto 0;"></div>
+    <p>
+      Whether you are a continuing student or newly joining Maseno University, NMCS welcomes you. Be formed, be challenged, and be sent — as a student leader rooted in faith and justice.
+    </p>
+    <a href="#" class="btn-join" onclick="openModal(); return false;">
+      <span>Join Us Today ✝</span>
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">NMCS Kenya — Maseno Chapter</div>
+  <div class="footer-tagline">"See · Judge · Act" — Students in Mission</div>
+
+  <div class="social-row">
+    <span class="social-label">Follow us on</span>
+    <div class="social-links">
+      <a href="#" class="social-link">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        Instagram
+      </a>
+      <a href="#" class="social-link">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+        YouTube
+      </a>
+      <a href="#" class="social-link">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        Twitter / X
+      </a>
+    </div>
+  </div>
+
+  <p class="footer-copy">
+    &copy; 2025 NMCS Kenya – Maseno Chapter. All rights reserved. |
+    <a href="#">Privacy Policy</a> |
+    Affiliated with <a href="#">IMCS–Pax Romana</a>
+  </p>
+</footer>
+
+<!-- MODAL FORM -->
+<div class="modal-overlay" id="modal" onclick="handleOverlayClick(event)">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <button class="modal-close" onclick="closeModal()" aria-label="Close">&times;</button>
+
+    <div id="form-content">
+      <h3 id="modal-title">Join NMCS Maseno</h3>
+      <p class="modal-sub">Fill in the details below and our team will reach out to welcome you.</p>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="fname">First Name *</label>
+          <input type="text" id="fname" placeholder="e.g. Brian" required/>
+        </div>
+        <div class="form-group">
+          <label for="lname">Last Name *</label>
+          <input type="text" id="lname" placeholder="e.g. Otieno" required/>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email Address *</label>
+        <input type="email" id="email" placeholder="you@maseno.ac.ke" required/>
+      </div>
+
+      <div class="form-group">
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" placeholder="+254 7XX XXX XXX"/>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="course">Course / Programme *</label>
+          <input type="text" id="course" placeholder="e.g. BSc Computer Science" required/>
+        </div>
+        <div class="form-group">
+          <label for="year">Year of Study *</label>
+          <select id="year" required>
+            <option value="" disabled selected>Select year</option>
+            <option>Year 1</option>
+            <option>Year 2</option>
+            <option>Year 3</option>
+            <option>Year 4</option>
+            <option>Postgraduate</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="parish">Home Parish / Diocese</label>
+        <input type="text" id="parish" placeholder="e.g. St. Peter's Parish, Kisumu"/>
+      </div>
+
+      <div class="form-group">
+        <label for="motivation">Why do you want to join NMCS?</label>
+        <textarea id="motivation" placeholder="Share a bit about your motivation…"></textarea>
+      </div>
+
+      <button class="btn-submit" onclick="submitForm()">Submit Application ✝</button>
+    </div>
+
+    <div class="form-success" id="form-success">
+      <div class="check">✝</div>
+      <h4>Welcome to the Movement!</h4>
+      <p>Thank you for your application. A member of the NMCS Maseno team will be in touch shortly. May God bless your journey with us.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Modal
+  function openModal() {
+    document.getElementById('modal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal() {
+    document.getElementById('modal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function handleOverlayClick(e) {
+    if (e.target === document.getElementById('modal')) closeModal();
+  }
+  function submitForm() {
+    const required = ['fname','lname','email','course','year'];
+    let valid = true;
+    required.forEach(id => {
+      const el = document.getElementById(id);
+      if (!el.value.trim()) { el.style.borderColor = '#c0392b'; valid = false; }
+      else el.style.borderColor = '';
+    });
+    if (!valid) return;
+    document.getElementById('form-content').style.display = 'none';
+    document.getElementById('form-success').style.display = 'block';
+    setTimeout(closeModal, 4000);
+  }
+
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
 </html>
+<!-- 
+    ============================================
+    CUSTOMIZATION REQUIRED
+    ============================================
+    
+    1. SOCIAL LINKS (Footer section)
+         - Update href="#" with actual social media URLs
+         - Example: href="https://instagram.com/your-account"
+    
+    2. FORM SUBMISSION
+         - Connect submitForm() to your backend/email service
+         - Currently shows success message but doesn't send data
+         - Consider using: Formspree, EmailJS, or your own API
+    
+    3. CONTACT INFORMATION
+         - Add phone number in footer or contact section
+         - Add email address for inquiries
+         - Add physical address if needed
+    
+    4. IMAGES
+         - Replace all Unsplash placeholder images with your own
+         - Update img src URLs throughout for:
+             * Hero background
+             * History section images
+             * Leader profile photos
+    
+    5. LEADER INFORMATION
+         - Update names, positions, and quotes with actual chapter leaders
+         - Add/remove leader cards as needed (6 cards currently)
+    
+    6. CONTENT UPDATES
+         - Verify all text content matches your organization
+         - Update dates, statistics, and historical information
+         - Customize quotes and descriptions
+    
+    7. ANALYTICS & SEO
+         - Add Google Analytics tracking code
+         - Update meta descriptions and OG tags
+         - Add favicon link
+    
+    ============================================
+-->
